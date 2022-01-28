@@ -1,4 +1,3 @@
-const BABYLON = require("babylonjs")
 var canvas = document.getElementById("renderCanvas");
 
 var startRenderLoop = function (engine, canvas) {
