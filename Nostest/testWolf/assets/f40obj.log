@@ -1,0 +1,262 @@
+Exporter version: 2.93.5, Blender version: 2.93.5
+========= Conversion from Blender to Babylon.js =========
+	Scene settings used :
+		Inline textures     :  false
+		Material Type       :  PBR
+		Positions Precision :  4
+		Normals Precision   :  3
+		UVs Precision       :  3
+		Vert Color Precision:  3
+		Mat Weight Precision:  2
+		Keep Z-up r-handed  :  no
+		Texture directory   :  C:\Users\robin\Desktop\EXPORTS\
+	Python World class constructor completed
+	WARNING: No active camera has been assigned, or is not in a currently enabled collection
+	processing begun of mesh:  Cube
+		processing begun of material:  logo_fefe
+			processing texture 
+				WARNING: Exception during copy:
+					Error: Could not write image: Permission denied, 'C:\Users\robin\Desktop\EXPORTS\.'
+
+				texture type:  diffuseTexture, mapped using: "UVMap"
+		num positions      :  29
+		num normals        :  29
+		num tangents       :  0
+		num uvs            :  58
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  12
+	processing begun of mesh:  Cube.001
+		processing begun of material:  logo_rear
+			WARNING: unsupported node type(ShaderNodeValToRGB) will trigger baking
+			bake time:  0 min, 0.004 secs
+		num positions      :  29
+		num normals        :  29
+		num tangents       :  0
+		num uvs            :  58
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  12
+	processing begun of mesh:  Cube.002
+		processing begun of material:  cheval de metal
+			WARNING: unsupported node type(ShaderNodeValToRGB) will trigger baking
+			WARNING: unsupported node type(ShaderNodeValToRGB) will trigger baking
+			WARNING: unsupported node type(ShaderNodeBump) will trigger baking
+			processing texture 
+				WARNING: Exception during copy:
+					Error: Could not write image: Permission denied, 'C:\Users\robin\Desktop\EXPORTS\.'
+
+				texture type:  diffuseTexture, mapped using: "UVMap"
+			processing texture 
+				WARNING: Exception during copy:
+					Error: Could not write image: Permission denied, 'C:\Users\robin\Desktop\EXPORTS\.'
+
+				texture type:  bumpTexture, mapped using: "UVMap"
+			bake time:  0 min, 0.003 secs
+		num positions      :  29
+		num normals        :  29
+		num tangents       :  0
+		num uvs            :  58
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  12
+	processing begun of mesh:  Cube.003
+		processing begun of material:  cams.002
+		processing begun of material:  black.002
+		processing begun of material:  collecteur$.002
+		processing begun of multimaterial:  f40obj.Multimaterial#0
+		num positions      :  1491
+		num normals        :  1491
+		num tangents       :  0
+		num uvs            :  2982
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  568
+	processing begun of mesh:  Cylinder.002
+		processing begun of material:  turbo
+		processing begun of material:  turbo_mat
+			WARNING: unsupported node type(ShaderNodeTexNoise) will trigger baking
+			WARNING: unsupported node type(ShaderNodeTexNoise) will trigger baking
+		processing begun of material:  rotor
+			WARNING: Metal channel baking required, but not possible, ignored
+			WARNING: Roughness channel baking required, but not possible, ignored
+			WARNING: Refraction channel baking required, but not possible, ignored
+			Baking texture, type: DIFFUSE, mapped using: BakingUV
+			processing texture Cylinder_002_baked_DIFFUSE
+				texture type:  diffuseTexture, mapped using: "BakingUV"
+			Diffuse / albeto channel baked
+			Baking texture, type: EMIT, mapped using: BakingUV
+			processing texture Cylinder_002_baked_EMIT
+				texture type:  emissiveTexture, mapped using: "BakingUV"
+			emissive channel baked
+			Baking texture, type: GLOSSY, mapped using: BakingUV
+			processing texture Cylinder_002_baked_GLOSSY
+				texture type:  specularTexture, mapped using: "BakingUV"
+			specular channel baked
+			bake time:  0 min, 2.5353 secs
+		num positions      :  16722
+		num normals        :  16722
+		num tangents       :  0
+		num uvs            :  33444
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  23284
+	processing begun of mesh:  Cylinder.003
+		processing begun of material:  turbo
+		processing begun of material:  turbo_mat
+			WARNING: unsupported node type(ShaderNodeTexNoise) will trigger baking
+			WARNING: unsupported node type(ShaderNodeTexNoise) will trigger baking
+		processing begun of material:  rotor
+			WARNING: Metal channel baking required, but not possible, ignored
+			WARNING: Roughness channel baking required, but not possible, ignored
+			WARNING: Refraction channel baking required, but not possible, ignored
+			Baking texture, type: DIFFUSE, mapped using: BakingUV
+			processing texture Cylinder_003_baked_DIFFUSE
+				texture type:  diffuseTexture, mapped using: "BakingUV"
+			Diffuse / albeto channel baked
+			Baking texture, type: EMIT, mapped using: BakingUV
+			processing texture Cylinder_003_baked_EMIT
+				texture type:  emissiveTexture, mapped using: "BakingUV"
+			emissive channel baked
+			Baking texture, type: GLOSSY, mapped using: BakingUV
+			processing texture Cylinder_003_baked_GLOSSY
+				texture type:  specularTexture, mapped using: "BakingUV"
+			specular channel baked
+			bake time:  0 min, 2.0581 secs
+		num positions      :  738
+		num normals        :  738
+		num tangents       :  0
+		num uvs            :  1476
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  508
+	processing begun of mesh:  Plane.002
+		WARNING: No materials have been assigned: 
+		num positions      :  31
+		num normals        :  31
+		num tangents       :  0
+		num uvs            :  62
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  12
+	WARNING: The following object (type - SURFACE) is not currently exportable thus ignored: Surface.002
+	WARNING: The following object (type - SURFACE) is not currently exportable thus ignored: Surface.001
+	WARNING: The following object (type - SURFACE) is not currently exportable thus ignored: Surface.003
+	processing begun of mesh:  Surface.004
+		processing begun of material:  pipe.002
+		processing begun of material:  collecteur$.002
+		processing begun of material:  Material.002
+		processing begun of material:  cams.002
+		processing begun of material:  black.002
+		registered as also a user of material:  collecteur$.002
+		registered as also a user of material:  cams.002
+		registered as also a user of material:  black.002
+		processing begun of multimaterial:  f40obj.Multimaterial#1
+		num positions      :  26158
+		num normals        :  26158
+		num tangents       :  0
+		num uvs            :  52316
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  47172
+		WARNING: # of 0 area faces found:  4
+	processing begun of mesh:  Cylinder
+		processing begun of material:  pneu
+			WARNING: unsupported node type(ShaderNodeTexNoise) will trigger baking
+			WARNING: unsupported node type(ShaderNodeValToRGB) will trigger baking
+		processing begun of material:  jante
+		processing begun of material:  aero
+			WARNING: Metal channel baking required, but not possible, ignored
+			WARNING: Roughness channel baking required, but not possible, ignored
+			WARNING: Refraction channel baking required, but not possible, ignored
+			Baking texture, type: DIFFUSE, mapped using: BakingUV
+			processing texture Cylinder_baked_DIFFUSE
+				texture type:  diffuseTexture, mapped using: "BakingUV"
+			Diffuse / albeto channel baked
+			Baking texture, type: EMIT, mapped using: BakingUV
+			processing texture Cylinder_baked_EMIT
+				texture type:  emissiveTexture, mapped using: "BakingUV"
+			emissive channel baked
+			Baking texture, type: GLOSSY, mapped using: BakingUV
+			processing texture Cylinder_baked_GLOSSY
+				texture type:  specularTexture, mapped using: "BakingUV"
+			specular channel baked
+			bake time:  0 min, 2.6018 secs
+		num positions      :  11881
+		num normals        :  11881
+		num tangents       :  0
+		num uvs            :  23762
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  8624
+	processing begun of mesh:  Cylinder.001
+		processing begun of material:  ferrared
+		processing begun of material:  jante
+		processing begun of multimaterial:  f40obj.Multimaterial#2
+		num positions      :  220
+		num normals        :  220
+		num tangents       :  0
+		num uvs            :  440
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  182
+		WARNING: # of 0 area faces found:  2
+	processing begun of mesh:  Plane.001
+		processing begun of material:  ferrared
+		processing begun of material:  parbrise
+		processing begun of material:  aero
+		processing begun of material:  plastic_trans
+		processing begun of material:  phares
+		processing begun of material:  RED
+		processing begun of material:  jante
+		processing begun of material:  transparent red
+		processing begun of material:  transparent orange
+		processing begun of material:  Vitre
+			WARNING: unsupported node type(ShaderNodeBsdfGlass) will trigger baking
+		processing begun of material:  v8_light
+		processing begun of material:  enginebay
+		processing begun of material:  logo_sides
+		processing begun of material:  grille
+			WARNING: unsupported node type(ShaderNodeTexChecker) will trigger baking
+		processing begun of material:  clignotant
+		processing begun of material:  clignotanterear
+		processing begun of material:  amorphe
+			WARNING: Metal channel baking required, but not possible, ignored
+			WARNING: Roughness channel baking required, but not possible, ignored
+			WARNING: Refraction channel baking required, but not possible, ignored
+			Baking texture, type: DIFFUSE, mapped using: BakingUV
+			processing texture Plane_001_baked_DIFFUSE
+				texture type:  diffuseTexture, mapped using: "BakingUV"
+			Diffuse / albeto channel baked
+			Baking texture, type: EMIT, mapped using: BakingUV
+			processing texture Plane_001_baked_EMIT
+				texture type:  emissiveTexture, mapped using: "BakingUV"
+			emissive channel baked
+			Baking texture, type: GLOSSY, mapped using: BakingUV
+			processing texture Plane_001_baked_GLOSSY
+				texture type:  specularTexture, mapped using: "BakingUV"
+			specular channel baked
+			bake time:  0 min, 2.2309 secs
+		num positions      :  17008
+		num normals        :  17008
+		num tangents       :  0
+		num uvs            :  34016
+		num uvs2           :  0
+		num colors         :  0
+		num triangles      :  6356
+		WARNING: # of 0 area faces found:  78
+========= Writing of JSON file started =========
+	writing mesh:  Cube
+	writing mesh:  Cube.001
+	writing mesh:  Cube.002
+	writing mesh:  Cube.003
+	writing mesh:  Cylinder.002
+	writing mesh:  Cylinder.003
+	writing mesh:  Plane.002
+	writing mesh:  Surface.004
+	writing mesh:  Cylinder
+	writing mesh:  Cylinder.001
+	writing mesh:  Plane.001
+========= Writing of JSON file completed =========
+========= end of processing =========
+elapsed time:  0 min, 16.5567 secs
