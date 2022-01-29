@@ -7,7 +7,7 @@ function createScene() {
     camera.attachControl(canvas, true);
     const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 0, 0), scene)
     const box = BABYLON.MeshBuilder.CreateBox('box', {}, scene)
-    const car = BABYLON.SceneLoader.ImportMesh('','./assets/babylon_object/f40obj.babylon',"", scene, {});
+    const car = BABYLON.SceneLoader.ImportMesh('','./assets/babylon_object/f40obj.babylon',"", scene, {}); // voiture F40
     window.addEventListener("keydown", function(evt) {
         switch(evt.keyCode) {
             case 90: // Touche z
