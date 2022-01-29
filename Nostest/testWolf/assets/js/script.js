@@ -39,14 +39,11 @@ const createScene =  () => {
             music.play();
           }
         });
-    
-    
-    
-
-    BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
-      // Set the target of the camera to the first imported mesh
-
-  });
+    const sphere = BABYLON.Mesh.CreateSphere("sphere", 200, 10, scene);
+    const box = BABYLON.MeshBuilder.CreateBox("box", {});
+    box.position.y =6;
+    const ground = BABYLON.MeshBuilder.CreateGround("ground", {width:1000, height:100});
+   
     return scene;
 }
 window.initFunction = async function () {
