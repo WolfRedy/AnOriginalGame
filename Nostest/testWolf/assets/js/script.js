@@ -43,10 +43,14 @@ const createScene =  () => {
     
     
 
-    BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
+    //BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
       // Set the target of the camera to the first imported mesh
 
-  });
+  //});
+  BABYLON.SceneLoader.ImportMesh("", "./assets/", "f40obj.babylon", scene, function (newMeshes) {
+    // Set the target of the camera to the first imported mesh
+
+});
     return scene;
 }
 window.initFunction = async function () {
