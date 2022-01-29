@@ -47,11 +47,12 @@ const createScene =  () => {
       // Set the target of the camera to the first imported mesh
 
   });
-  
+  car._y = 2500;
   BABYLON.SceneLoader.ImportMesh("", "./assets/", "f40obj.babylon", scene, function (newMeshes) {
     // Set the target of the camera to the first imported mesh
 
 });
+
     return scene;
 }
 window.initFunction = async function () {
