@@ -18,6 +18,7 @@ var createDefaultEngine = function () {
     disableWebGL2Support: false,
   });
 };
+var tankinoa = [];
 const createScene =  () => {
     const scene = new BABYLON.Scene(engine);
     
@@ -41,9 +42,9 @@ const createScene =  () => {
         });
     
     
-var tankinoa;
 
-    var car = BABYLON.SceneLoader.ImportMesh("", "../", "tank.babylon", scene, function (newMeshes) {
+
+    var car = BABYLON.SceneLoader.ImportMesh("", "./", "tank.babylon", scene, function (newMeshes) {
       // Set the target of the camera to the first imported mesh
       for (meshes of newMeshes){
         
@@ -53,36 +54,37 @@ var tankinoa;
 
         
         
-        tankinoa = meshes
+        tankinoa.push(meshes);
 
-
+        console.log(tankinoa[0])
 
 
 
       }
   });
-
+  
+  tankinoa[0].position.x += 1 ;
   window.addEventListener("keydown", function(evt) {
     switch(evt.keyCode) {
         case 90: // Touche z
-        tankinoa.position.x += 1 ;
+        tankinoa[0].position.x += 1 ;
             break
         case 83: // Touche s
-        tankinoa.position.x -= 1 ;
+        tankinoa[0].position.x -= 1 ;
             break
         case 81: // Touche q
-        tankinoa.position.z += 1 ;
+        tankinoa[0].position.z += 1 ;
             break
         case 68: // Touche d
-        tankinoa.position.z -= 1 ;
+        tankinoa[0].position.z -= 1 ;
             break
     }
 });
 
-tankinoa.position.x += 1 ;
+
 
   
-  BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
+BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
     // Set the target of the camera to the first imported mesh
 
 });
