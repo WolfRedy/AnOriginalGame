@@ -67,13 +67,13 @@ const createScene =  () => {
                   meshes.position.z-=1;
                       break
               }
-          });;
- 
+            })
+          }
+        })
   
   BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
     // Set the target of the camera to the first imported mesh
-
-});
+  })
 
     return scene;
 }
@@ -101,4 +101,4 @@ initFunction().then(() => {
 // Resize
 window.addEventListener("resize", function () {
   engine.resize();
-});
+})
