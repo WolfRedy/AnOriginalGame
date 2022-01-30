@@ -20,18 +20,11 @@ function createScene() {
     }); // Tank
     return scene
 }
-function test() {
-    const scene = createScene()
-    engine.runRenderLoop(() => {
-        scene.render()
-    })
-    return
-}
-async function setup() {
-    await test()
-    objectList[0].position.x-=10
-}
-setup()
+
+const scene = createScene()
+engine.runRenderLoop(() => {
+    scene.render()
+})
 window.addEventListener("keydown", function(evt) {
     switch(evt.keyCode) {
         case 90: // Touche z
@@ -48,3 +41,5 @@ window.addEventListener("keydown", function(evt) {
             break
     }
 });
+console.log(objectList)
+objectList[0].position.x-=10
