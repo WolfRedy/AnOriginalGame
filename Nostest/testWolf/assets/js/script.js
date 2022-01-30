@@ -24,15 +24,19 @@ const createScene =  () => {
     scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
   
     /**** Set camera and light *****/
-    //const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10, new BABYLON.Vector3(0, 0, 0));
+    	//var camera = new BABYLON.ArcRotateCamera("Camera", 3 * Math.PI / 2, -Math.PI / 2, 50, BABYLON.Vector3.Zero(), scene);
+      //camera.useFramingBehavior=true;
     //camera.attachControl(canvas, true);
-    var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 10, -16), scene);
+    camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 10, -16), scene);
     camera.setTarget(new BABYLON.Vector3(0, -8, 0));
     camera.attachControl(canvas, true);
     camera.minZ = 0.45;
     camera.checkCollisions = true;
+    //camera.applyGravity = true;
+   
     
-    camera.applyGravity = true;
+
+
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
     const music  = new BABYLON.Sound("retromus", "./assets/sounds/among.mp3", scene); 
     window.addEventListener("keyup", onKeyUp, false);function onKeyUp(event){    switch (event.keyCode) {        case 32:            camera.position.y += 3;        break;    }}
@@ -45,16 +49,20 @@ const createScene =  () => {
         
         window.addEventListener("keydown", function(evt) {
           // Press space key to fire
-          if (evt.keyCode === 32) {
+          if (evt.keyCode === 83) {
             music.play();
           }
         });
     
     
-        
+        var ground = BABYLON.Mesh.CreatePlane("ground", 20.0, scene);
+        ground.position = new BABYLON.Vector3(5, 20, -15);
+        ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
+        ground.checkCollisions=true;
+
         var car = BABYLON.SceneLoader.ImportMesh("", "./assets/", "tank.babylon", scene, function (newMeshes) {
           // Set the target of the camera to the first imported mesh
-        
+          camera.setTarget(meshes);
           for (meshes of newMeshes){
             
             meshes.position.x += 20
@@ -85,8 +93,37 @@ const createScene =  () => {
             })
           }
         })
-        
-        
+        //Ici j'ai crée une boite avec une pos que je fais bouger
+        const box = BABYLON.MeshBuilder.CreateBox("box", {});
+        box.position= new BABYLON.Vector3(10,50,5)
+        box.position.x = 20;
+    
+        const frameRate = 5;
+    
+        const xSlide = new BABYLON.Animation("xSlide", "position.x", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+    
+        const keyFrames = []; 
+    
+        keyFrames.push({
+            frame: 0,
+            value: 20
+        });
+    
+        keyFrames.push({
+            frame: frameRate,
+            value: -20
+        });
+    
+        keyFrames.push({
+            frame: 2 * frameRate,
+            value: 20
+        });
+    
+        xSlide.setKeys(keyFrames);
+    
+        box.animations.push(xSlide);//on push nos données dans xSlide qui gère l'animation
+    //animation avant
+        scene.beginAnimation(box, 0, 2 * frameRate, true);      
   BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
     for (meshes of newMeshes){meshes.checkCollisions = true;}
     
