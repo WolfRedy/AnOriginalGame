@@ -6,7 +6,6 @@ function createScene() {
     const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10, new BABYLON.Vector3(0, 0, 0));
     camera.attachControl(canvas, true);
     const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 0, 0), scene)
-    //const box = BABYLON.MeshBuilder.CreateBox('box', {}, scene)
     const tank = BABYLON.SceneLoader.ImportMesh('','./assets/babylon_object/tank.babylon',"", scene, function (newMeshes){
         for(mesh of newMeshes) {
             mesh.scaling = new BABYLON.Vector3(1, 1, 1)
