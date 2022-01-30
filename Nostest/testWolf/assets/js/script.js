@@ -41,19 +41,33 @@ const createScene =  () => {
         });
     
     
+      
+        var car = BABYLON.SceneLoader.ImportMesh("", "./assets/", "tank.babylon", scene, function (newMeshes) {
+          // Set the target of the camera to the first imported mesh
+          for (meshes of newMeshes){
+            
+            meshes.position.x += 20
+            meshes.position.y += 20
+            meshes.position.z += 20
     
-
-    var car = BABYLON.SceneLoader.ImportMesh("", "./assets/", "f40obj.babylon", scene, function (newMeshes) {
-      // Set the target of the camera to the first imported mesh
-      for (meshes of newMeshes){
-        
-        meshes.scaling.x *= 20
-        meshes.scaling.y *= 20
-        meshes.scaling.z *= 20
-
-        meshes.position = new BABYLON.Vector3(0,1,1);
-      }
-  });
+            meshes.position = new BABYLON.Vector3(0,1,1);
+            
+            window.addEventListener("keydown", function(evt) {
+              switch(evt.keyCode) {
+                  case 90: // Touche z
+                      meshes.position.x+=1;
+                      break
+                  case 83: // Touche s
+                      meshes.position.x-=1;
+                      break
+                  case 81: // Touche q
+                  meshes.position.z+=1; 
+                      break
+                  case 68: // Touche d
+                  meshes.position.z-=1;
+                      break
+              }
+          });;
  
   
   BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
