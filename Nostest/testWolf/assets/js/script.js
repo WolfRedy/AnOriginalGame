@@ -109,7 +109,7 @@ const createScene =  () => {
         const xSlide = new BABYLON.Animation("xSlide", "position.x", frameRate, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
     
         const keyFrames = []; 
-    
+        console.log(keyFrames)
         keyFrames.push({
             frame: 0,
             value: 20
