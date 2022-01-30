@@ -45,9 +45,13 @@ const createScene =  () => {
 
     var car = BABYLON.SceneLoader.ImportMesh("", "./assets/", "f40obj.babylon", scene, function (newMeshes) {
       // Set the target of the camera to the first imported mesh
-      for (meshes in newMeshes){
-        newMeshes[meshes].scaling = new BABYLON.Vector3(1, 1, 1);
-        newMeshes[meshes].position = new BABYLON.Vector3(0,1,100);
+      for (meshes of newMeshes){
+        
+        meshes.scaling.x *= 20
+        meshes.scaling.y *= 20
+        meshes.scaling.z *= 20
+
+        meshes.position = new BABYLON.Vector3(0,1,1);
       }
   });
  
