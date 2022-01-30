@@ -20,12 +20,22 @@ var createDefaultEngine = function () {
 };
 const createScene =  () => {
     const scene = new BABYLON.Scene(engine);
-    
+    scene.collisionsEnabled = true;
+    scene.gravity = new BABYLON.Vector3(0, -0.9, 0);
+  
     /**** Set camera and light *****/
-    const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10, new BABYLON.Vector3(0, 0, 0));
+    //const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10, new BABYLON.Vector3(0, 0, 0));
+    //camera.attachControl(canvas, true);
+    var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 10, -16), scene);
+    camera.setTarget(new BABYLON.Vector3(0, -8, 0));
     camera.attachControl(canvas, true);
+    camera.minZ = 0.45;
+    camera.checkCollisions = true;
+    
+    camera.applyGravity = true;
     const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
     const music  = new BABYLON.Sound("retromus", "./assets/sounds/among.mp3", scene); 
+    window.addEventListener("keyup", onKeyUp, false);function onKeyUp(event){    switch (event.keyCode) {        case 32:            camera.position.y += 3;        break;    }}
         window.addEventListener("mousedown", function(evt) {
         // left click to fire
         if (evt.button === 0) {
@@ -41,9 +51,10 @@ const createScene =  () => {
         });
     
     
-      
+        
         var car = BABYLON.SceneLoader.ImportMesh("", "./assets/", "tank.babylon", scene, function (newMeshes) {
           // Set the target of the camera to the first imported mesh
+        
           for (meshes of newMeshes){
             
             meshes.position.x += 20
@@ -51,7 +62,7 @@ const createScene =  () => {
             meshes.position.z += 20
     
             meshes.position = new BABYLON.Vector3(0,1,1);
-            
+            meshes.checkCollisions = true;
             window.addEventListener("keydown", function(evt) {
               switch(evt.keyCode) {
                   case 90: // Touche z
@@ -66,13 +77,19 @@ const createScene =  () => {
                   case 68: // Touche d
                   meshes.position.z-=1;
                       break
+                  case 32: //space
+                  meshes.position.y+=1;
+                      break
+                
               }
             })
           }
         })
-  
+        
+        
   BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
-    // Set the target of the camera to the first imported mesh
+    for (meshes of newMeshes){meshes.checkCollisions = true;}
+    
   })
 
     return scene;
