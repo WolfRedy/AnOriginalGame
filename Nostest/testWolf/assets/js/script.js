@@ -54,7 +54,7 @@ const createScene =  () => {
           }
         });
     
-    
+        
         var ground = BABYLON.Mesh.CreatePlane("ground", 20.0, scene);
         ground.position = new BABYLON.Vector3(5, 20, -15);
         ground.rotation = new BABYLON.Vector3(Math.PI / 2, 0, 0);
@@ -93,10 +93,16 @@ const createScene =  () => {
             })
           }
         })
+        //We create 2000 trees at random positions
+     for (var i = 0; i < 2000; i++) {
+      boxNew = BABYLON.MeshBuilder.CreateBox("box", {});
+      boxNew.position.x = Math.random() * 100 - 50;
+      boxNew.position.z = Math.random() * 100 - 50;
+     }
         //Ici j'ai crée une boite avec une pos que je fais bouger
-        const box = BABYLON.MeshBuilder.CreateBox("box", {});
-        box.position= new BABYLON.Vector3(10,50,5)
-        box.position.x = 20;
+        //const box = BABYLON.MeshBuilder.CreateBox("box", {});
+        //boxNew.position= new BABYLON.Vector3(10,50,5)
+        boxNew.position.x = 20;
     
         const frameRate = 5;
     
@@ -121,13 +127,17 @@ const createScene =  () => {
     
         xSlide.setKeys(keyFrames);
     
-        box.animations.push(xSlide);//on push nos données dans xSlide qui gère l'animation
+        boxNew.animations.push(xSlide);//on push nos données dans xSlide qui gère l'animation
     //animation avant
-        scene.beginAnimation(box, 0, 2 * frameRate, true);      
+        scene.beginAnimation(boxNew, 0, 2 * frameRate, true);      
   BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
     for (meshes of newMeshes){meshes.checkCollisions = true;}
     
   })
+
+
+     
+
 
     return scene;
 }
