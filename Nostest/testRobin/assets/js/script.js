@@ -7,7 +7,7 @@ let tankinoa
 
 function createScene() {
     const scene = new BABYLON.Scene(engine);
-    const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10, new BABYLON.Vector3(0, 0, 0));
+    var camera = new BABYLON.TargetCamera("UniversalCamera", new BABYLON.Vector3(10, -10, 0), scene);
     camera.attachControl(canvas, true)
     
 
@@ -25,7 +25,7 @@ function createScene() {
     var physicsRoot = new BABYLON.Mesh("", scene);
     
 
-
+    camera.lockedTarget= physicsRoot;
 
 
 
@@ -64,31 +64,45 @@ function createScene() {
     //Physics
     scene.enablePhysics(null, new BABYLON.CannonJSPlugin());
     
-    ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0.7 }, scene);
+    ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.1, restitution: 0.1 }, scene);
 
-    const box = BABYLON.MeshBuilder.CreateBox("box", {size:10}, scene);
+    const box = BABYLON.MeshBuilder.CreateBox("box", {width: 10, height: 3, depth: 10}, scene);
     box.isVisible = false;
+    box.position.set(0,0,0)
+    box.position.y +=0.45
 
     
     physicsRoot.addChild(box)
-    box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.0, restitution: 0 }, scene);
-    physicsRoot.physicsImpostor = new BABYLON.PhysicsImpostor(physicsRoot, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 5, friction: 0.0, restitution: 0.7 }, scene);
+    box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0}, scene);
+    physicsRoot.physicsImpostor = new BABYLON.PhysicsImpostor(physicsRoot, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 5, friction: 0.1, restitution: 0.7 }, scene);
     
 
-    var impulseDirection = new BABYLON.Vector3(0, 1, 0);
-    var impulseMagnitude = 5;
+    
+    var impulseMagnitude = 20;
     var contactLocalRefPoint = BABYLON.Vector3.Zero();
-    var Pulse = function(meshtopulse) {
+    var Pulse = function(meshtopulse,impulseDirection) {
         meshtopulse.physicsImpostor.applyImpulse(impulseDirection.scale(impulseMagnitude), box.getAbsolutePosition().add(contactLocalRefPoint));
     }
 
     window.addEventListener("keydown", function(evt) {
         switch(evt.keyCode) {
-            case 32:
-            Pulse(physicsRoot)
-            console.log(physicsRoot)
-    }});
-
+            case 90: // Touche z
+                Pulse(physicsRoot,new BABYLON.Vector3(-1,0,0))
+                break
+            case 83: // Touche s
+            Pulse(physicsRoot,new BABYLON.Vector3(1,0,0))
+                break
+            case 81: // Touche q
+            Pulse(physicsRoot,new BABYLON.Vector3(0,0,-1))
+                break
+            case 68: // Touche d
+            Pulse(physicsRoot,new BABYLON.Vector3(0,0,1))
+                break
+            case 32: // Touche space
+            Pulse(physicsRoot,new BABYLON.Vector3(0,1,0))
+                break
+        }
+    });
 
     return scene
 }
@@ -96,26 +110,10 @@ function createScene() {
 const scene = createScene()
 engine.runRenderLoop(() => {
     scene.render()
+    
 })
 
 
 
 
 
-window.addEventListener("keydown", function(evt) {
-    switch(evt.keyCode) {
-        case 90: // Touche z
-            objectList[0].position.x-=a
-            break
-        case 83: // Touche s
-            objectList[0].position.x+=a
-            break
-        case 81: // Touche q
-            objectList[0].position.z-=a
-            break
-        case 68: // Touche d
-            objectList[0].position.z+=a
-            break
-
-    }
-});
