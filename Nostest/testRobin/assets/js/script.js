@@ -8,7 +8,7 @@ let tankinoa
 function createScene() {
     const scene = new BABYLON.Scene(engine);
     var camera = new BABYLON.TargetCamera("UniversalCamera", new BABYLON.Vector3(10, -10, 0), scene);
-    camera.attachControl(canvas, true)
+    
     
 
     //ground 
@@ -23,8 +23,11 @@ function createScene() {
     ground.receiveShadows = true;
 
     var physicsRoot = new BABYLON.Mesh("", scene);
-    
-
+    camera.radius = 30;
+    camera.heightOffset = 10;
+    camera.cameraAcceleration = 1;
+    camera.maxCameraSpeed = 10;
+    camera.attachControl(canvas, true)
     camera.lockedTarget= physicsRoot;
 
 
@@ -103,6 +106,19 @@ function createScene() {
                 break
         }
     });
+
+    scene.registerBeforeRender(function () {
+        camera.position = physicsRoot.position.add(new BABYLON.Vector3(20,2,0))
+        
+        
+        
+    });
+
+
+
+
+
+
 
     return scene
 }
