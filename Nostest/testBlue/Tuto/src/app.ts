@@ -94,17 +94,24 @@ class App {
         let scene = this._scene
         this._engine.displayLoadingUI();
         
-        // Camera
-        let camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), scene);
-        camera.attachControl(this._canvas, true);
+        this._InGame()
         
-        // Objets
-        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, this._scene);
-        var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), this._scene);
-
         // Attente de fin de render
         await scene.whenReadyAsync();
         this._engine.hideLoadingUI();
+    }
+
+    private async _InGame() {
+        let scene = this._scene
+
+        // Camera
+        let camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 12, Vector3.Zero(), scene);
+        camera.attachControl(this._canvas, true);
+
+        // Objets
+        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 10 }, this._scene);
+        var light: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), this._scene);
+
     }
 }
 new App();
