@@ -1,33 +1,30 @@
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import "@babylonjs/loaders/glTF";
-import {} from "@babylonjs/gui";
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, Color4, FreeCamera } from "@babylonjs/core";
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, Color4, FreeCamera, SceneLoader } from "@babylonjs/core";
+import {AdvancedDynamicTexture, Button, Control} from "@babylonjs/gui";
 
-enum State { START = 0, GAME = 1, LOSE = 2, CUTSCENE = 3 }
+enum GameState { START = 0, GAME = 1, PAUSE = 2, ANIMATION = 3 }
 
 class App {
-    // General Entire Application
     private _scene: Scene;
     private _canvas: HTMLCanvasElement;
     private _engine: Engine;
-
-    //Scene - related
     private _state: number = 0;
 
     constructor() {
         this._canvas = this._createCanvas();
 
-        // initialize babylon scene and engine
+        // Init
+        this._init()
+    }
+
+    // Fonction Init
+    private async _init(): Promise<void> {
         this._engine = new Engine(this._canvas, true);
         this._scene = new Scene(this._engine);
 
-        var camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), this._scene);
-        camera.attachControl(this._canvas, true);
-        var light1: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), this._scene);
-        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, this._scene);
-
-        // hide/show the Inspector
+        // Racourcis de Debug
         window.addEventListener("keydown", (ev) => {
             // Shift+Ctrl+Alt+I
             if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode === 73) {
@@ -39,13 +36,36 @@ class App {
             }
         });
 
-        // run the main render loop
+        // Main
+        await this._main();
+    }
+
+    // Fonction Main
+    private async _main(): Promise<void> {
+        await this._start();
+
+        // Render Loop
         this._engine.runRenderLoop(() => {
-            this._scene.render();
+            switch (this._state) {
+                case GameState.START:
+                    this._scene.render();
+                    break;
+                case GameState.GAME:
+                    this._scene.render();
+                    break;
+                case GameState.PAUSE:
+                    this._scene.render();
+                    break;
+                case GameState.ANIMATION:
+                    this._scene.render();
+                    break;
+                default: break;
+            }
         });
     }
+    
+    // Creation de Canvas
     private _createCanvas(): HTMLCanvasElement {
-        //Commented out for development
         document.documentElement.style["overflow"] = "hidden";
         document.documentElement.style.overflow = "hidden";
         document.documentElement.style.width = "100%";
@@ -58,7 +78,6 @@ class App {
         document.body.style.margin = "0";
         document.body.style.padding = "0";
 
-        //create the canvas html element and attach it to the webpage
         this._canvas = document.createElement("canvas");
         this._canvas.style.width = "100%";
         this._canvas.style.height = "100%";
@@ -66,22 +85,10 @@ class App {
         document.body.appendChild(this._canvas);
         return this._canvas;
     }
-    private async _goToStart() {
+
+    // Menu de base
+    private async _start() {
         this._engine.displayLoadingUI();
-        this._scene.detachControl();
-        let scene = new Scene(this._engine);
-        scene.clearColor = new Color4(0, 0, 0, 1);
-        let camera = new FreeCamera("camera1", new Vector3(0, 0, 0), scene);
-        camera.setTarget(Vector3.Zero());
-        //...do gui related stuff
-        
-        //--SCENE FINISHED LOADING--
-        await scene.whenReadyAsync();
-        this._engine.hideLoadingUI();
-        //lastly set the current state to the start state and set the scene to the start scene
-        this._scene.dispose();
-        this._scene = scene;
-        this._state = State.START;
     }
 }
 new App();
