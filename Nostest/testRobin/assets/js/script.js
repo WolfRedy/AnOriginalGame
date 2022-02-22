@@ -1,118 +1,136 @@
-var canvas = document.getElementById("renderCanvas");
 
-var startRenderLoop = function (engine, canvas) {
-  engine.runRenderLoop(function () {
-    if (sceneToRender && sceneToRender.activeCamera) {
-      sceneToRender.render();
-    }
-  });
-};
+const canvas = document.getElementById('renderCanvas')
+const engine = new BABYLON.Engine(canvas, true)
+let a = 0.1
+let objectList=[]
+let tankinoa
 
-var engine = null;
-var scene = null;
-var sceneToRender = null;
-var createDefaultEngine = function () {
-  return new BABYLON.Engine(canvas, true, {
-    preserveDrawingBuffer: true,
-    stencil: true,
-    disableWebGL2Support: false,
-  });
-};
-var tankinoa = [];
-const createScene =  () => {
+function createScene() {
     const scene = new BABYLON.Scene(engine);
-    
-    /**** Set camera and light *****/
-    const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10, new BABYLON.Vector3(0, 0, 0));
-    camera.attachControl(canvas, true);
-    const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
-    const music  = new BABYLON.Sound("retromus", "./assets/sounds/among.mp3", scene); 
-        window.addEventListener("mousedown", function(evt) {
-        // left click to fire
-        if (evt.button === 0) {
-            music.play();
-          }
-        });
-        
-        window.addEventListener("keydown", function(evt) {
-          // Press space key to fire
-          if (evt.keyCode === 32) {
-            music.play();
-          }
-        });
+    var camera = new BABYLON.TargetCamera("UniversalCamera", new BABYLON.Vector3(10, -10, 0), scene);
     
     
 
+    //ground 
+    var ground = BABYLON.MeshBuilder.CreateBox("Ground", {width: 100, height: 1, depth: 100}, scene);
+    ground.position.y = -20.0;
 
-    var car = BABYLON.SceneLoader.ImportMesh("", "./", "tank.babylon", scene, function (newMeshes) {
-      // Set the target of the camera to the first imported mesh
-      for (meshes of newMeshes){
-        
-        meshes.position.x += 2
-        meshes.position.y += 2
-        meshes.position.z += 2
+    var groundMat = new BABYLON.StandardMaterial("groundMat", scene);
+    groundMat.diffuseColor = new BABYLON.Color3(0.5, 0.5, 0.5);
+    groundMat.emissiveColor = new BABYLON.Color3(0.2, 0.2, 0.2);
+    groundMat.backFaceCulling = false;
+    ground.material = groundMat;
+    ground.receiveShadows = true;
 
-        
-        
-        tankinoa.push(meshes);
+    var physicsRoot = new BABYLON.Mesh("", scene);
+    camera.radius = 30;
+    camera.heightOffset = 10;
+    camera.cameraAcceleration = 1;
+    camera.maxCameraSpeed = 10;
+    camera.attachControl(canvas, true)
+    camera.lockedTarget= physicsRoot;
 
-        console.log(tankinoa[0])
+
+
+    console.log(camera)
+    window.addEventListener("keydown", function(evt) {
+        switch(evt.keyCode) {
+            case 90: // Touche z
+                console.log('ez')
+                camera.cameraPosition = new BABYLON.Vector3(10,2,3)
+                break
+        }
+    });
+    const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 0, 0), scene)
+    
+    
+    
+    const tank = BABYLON.SceneLoader.ImportMesh('','./tank.babylon',"", scene, function (newMeshes){
+        for(mesh of newMeshes) {
+            
+ 
+            console.log(mesh)
+            objectList.unshift(mesh)
+            physicsRoot.addChild(mesh)
+        }
+
+
+    
 
 
 
-      }
-  });
-  
-  tankinoa[0].position.x += 1 ;
-  window.addEventListener("keydown", function(evt) {
-    switch(evt.keyCode) {
-        case 90: // Touche z
-        tankinoa[0].position.x += 1 ;
-            break
-        case 83: // Touche s
-        tankinoa[0].position.x -= 1 ;
-            break
-        case 81: // Touche q
-        tankinoa[0].position.z += 1 ;
-            break
-        case 68: // Touche d
-        tankinoa[0].position.z -= 1 ;
-            break
+
+    }); // Tank
+
+
+
+    //Physics
+    scene.enablePhysics(null, new BABYLON.CannonJSPlugin());
+    
+    ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.1, restitution: 0.1 }, scene);
+
+    const box = BABYLON.MeshBuilder.CreateBox("box", {width: 10, height: 3, depth: 10}, scene);
+    box.isVisible = false;
+    box.position.set(0,0,0)
+    box.position.y +=0.45
+
+    
+    physicsRoot.addChild(box)
+    box.physicsImpostor = new BABYLON.PhysicsImpostor(box, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0}, scene);
+    physicsRoot.physicsImpostor = new BABYLON.PhysicsImpostor(physicsRoot, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 5, friction: 0.1, restitution: 0.7 }, scene);
+    
+
+    
+    var impulseMagnitude = 20;
+    var contactLocalRefPoint = BABYLON.Vector3.Zero();
+    var Pulse = function(meshtopulse,impulseDirection) {
+        meshtopulse.physicsImpostor.applyImpulse(impulseDirection.scale(impulseMagnitude), box.getAbsolutePosition().add(contactLocalRefPoint));
     }
-});
+
+    window.addEventListener("keydown", function(evt) {
+        switch(evt.keyCode) {
+            case 90: // Touche z
+                Pulse(physicsRoot,new BABYLON.Vector3(-1,0,0))
+                break
+            case 83: // Touche s
+            Pulse(physicsRoot,new BABYLON.Vector3(1,0,0))
+                break
+            case 81: // Touche q
+            Pulse(physicsRoot,new BABYLON.Vector3(0,0,-1))
+                break
+            case 68: // Touche d
+            Pulse(physicsRoot,new BABYLON.Vector3(0,0,1))
+                break
+            case 32: // Touche space
+            Pulse(physicsRoot,new BABYLON.Vector3(0,1,0))
+                break
+        }
+    });
+
+    scene.registerBeforeRender(function () {
+        
+        camera.position = physicsRoot.position.add(new BABYLON.Vector3(20,2,0))
+        
+        
+        
+    });
 
 
 
-  
-BABYLON.SceneLoader.ImportMesh("", "./assets/", "test.babylon", scene, function (newMeshes) {
-    // Set the target of the camera to the first imported mesh
 
-});
 
-    return scene;
+
+
+    return scene
 }
-window.initFunction = async function () {
-  var asyncEngineCreation = async function () {
-    try {
-      return createDefaultEngine();
-    } catch (e) {
-      console.log(
-        "the available createEngine function failed. Creating the default engine instead"
-      );
-      return createDefaultEngine();
-    }
-  };
 
-  window.engine = await asyncEngineCreation();
-  if (!engine) throw "engine should not be null.";
-  startRenderLoop(engine, canvas);
-  window.scene = createScene();
-};
-initFunction().then(() => {
-  sceneToRender = scene;
-});
+const scene = createScene()
+engine.runRenderLoop(() => {
+    scene.render()
+    
+})
 
-// Resize
-window.addEventListener("resize", function () {
-  engine.resize();
-});
+
+
+
+
