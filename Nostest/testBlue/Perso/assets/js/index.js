@@ -6,15 +6,6 @@ function createScene() {
     const scene = new BABYLON.Scene(engine);
     const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 2, Math.PI / 2.5, 10, new BABYLON.Vector3(0, 0, 0));
     camera.attachControl(canvas, true)
-    console.log(camera)
-    window.addEventListener("keydown", function(evt) {
-        switch(evt.keyCode) {
-            case 90: // Touche z
-                console.log('ez')
-                camera.cameraPosition = new BABYLON.Vector3(10,2,3)
-                break
-        }
-    });
     const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 0, 0), scene)
     const box = BABYLON.MeshBuilder.CreateBox("box", {
         size:10
@@ -34,6 +25,7 @@ const scene = createScene()
 engine.runRenderLoop(() => {
     scene.render()
 })
+console.log(scene.getGeometries())
 window.addEventListener("keydown", function(evt) {
     switch(evt.keyCode) {
         case 90: // Touche z
@@ -49,4 +41,5 @@ window.addEventListener("keydown", function(evt) {
             objectList[0].position.z+=a
             break
     }
+    scene.cameras[0].lockedTarget = objectList[0].position
 });
