@@ -30,6 +30,17 @@ module.exports = {
             },
         ],
     },
+    /*module: {
+        rules: [
+            {
+                test: /\.(png|jpe?g|gif|babylon)$/i,
+                use: [{
+                    loader: 'file-loader',
+                }],
+                exclude: /node_modules/,
+            },
+        ],
+    },*/
     plugins: [
         new HtmlWebpackPlugin({
             inject: true,

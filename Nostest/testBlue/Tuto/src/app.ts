@@ -2,7 +2,7 @@ import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import "@babylonjs/loaders/glTF";
 import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, Color4, FreeCamera, SceneLoader } from "@babylonjs/core";
-import {AdvancedDynamicTexture, Button, Control} from "@babylonjs/gui";
+import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
 
 enum GameState { STARTMENU = 0, GAME = 1, PAUSE = 2, ANIMATION = 3 }
 
@@ -11,7 +11,7 @@ class App {
     private _canvas: HTMLCanvasElement;
     private _engine: Engine;
     private _state: number = 0;
-
+    private _pause: boolean = false;
     constructor() {
         this._canvas = this._createCanvas();
 
@@ -33,9 +33,6 @@ class App {
                 } else {
                     this._scene.debugLayer.show();
                 }
-            }
-            if (ev.keyCode == 90) {
-                this._scene.detachControl();
             }
         });
 
@@ -91,27 +88,97 @@ class App {
 
     // Menu de base
     private async _startMenu() {
-        let scene = this._scene
-        this._engine.displayLoadingUI();
-        
-        this._InGame()
-        
-        // Attente de fin de render
-        await scene.whenReadyAsync();
-        this._engine.hideLoadingUI();
-    }
+        //this._engine.displayLoadingUI();
+        this._scene.detachControl();
 
-    private async _InGame() {
-        let scene = this._scene
+        let scene = new Scene(this._engine);
+        scene.clearColor = new Color4(0, 0, 0, 1);
 
         // Camera
-        let camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 12, Vector3.Zero(), scene);
+        let camera:FreeCamera = new FreeCamera("camera1", new Vector3(1, 1, 0), scene);
+        camera.setTarget(Vector3.Zero());
+        const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        guiMenu.idealHeight = 720; 
+
+        // Création du bouton
+        const startBtn = Button.CreateSimpleButton("start", "PLAY");
+        startBtn.width = 0.2;
+        startBtn.height = "40px";
+        startBtn.color = "white";
+        startBtn.top = "-14px";
+        startBtn.thickness = 1;
+        startBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+        guiMenu.addControl(startBtn);
+
+        //this handles interactions with the start button attached to the scene
+        startBtn.onPointerDownObservable.add(() => {
+            this._setUpGame(); //observables disabled
+        });
+
+        // Attente de fin de render
+        await scene.whenReadyAsync();
+        //this._engine.hideLoadingUI();
+
+        // Chepas
+        this._scene.dispose();
+        this._scene = scene;
+        this._state = GameState.STARTMENU;
+    }
+
+    private async _setUpGame() {
+        this._scene.detachControl();
+
+        // Scene
+        let scene = new Scene(this._engine);
+        this._scene = scene;
+        await this._pauseMenu()
+        await this._loadMesh(scene)
+        await this._loadCamera(scene)
+    }
+
+    private async _loadMesh(scene) {
+        //var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
+        var light: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
+        
+        var tank: SceneLoader = SceneLoader.ImportMesh('',"../public/assets/objets/tank.glb", "", scene, function (newMeshes){
+            for(const mesh of newMeshes) {
+                mesh.scaling = new Vector3(1, 1, 1)
+                mesh.position = new Vector3(0, 0, 0)
+            }
+        });
+        
+    }
+
+    private async _loadCamera(scene) {
+        let camera: ArcRotateCamera = new ArcRotateCamera("Camera", Math.PI / 2, Math.PI / 2, 2, Vector3.Zero(), scene);
         camera.attachControl(this._canvas, true);
+    }
 
-        // Objets
-        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 10 }, this._scene);
-        var light: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), this._scene);
-
+    private async _pauseMenu() {
+        const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI("UI");
+        guiMenu.idealHeight = 720; 
+        const startBtn = Button.CreateSimpleButton("start", "PLAY");
+        startBtn.width = 0.2;
+        startBtn.height = "40px";
+        startBtn.color = "white";
+        startBtn.top = "-14px";
+        startBtn.thickness = 1;
+        startBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+        startBtn.onPointerDownObservable.add(() => {
+            this._pause=false
+            guiMenu.removeControl(startBtn)
+        });
+        window.addEventListener("keydown", (ev) => {
+            if (ev.keyCode == 27) {
+                if(this._pause) {
+                    this._pause=false
+                    guiMenu.removeControl(startBtn)
+                } else {
+                    this._pause=true
+                    guiMenu.addControl(startBtn);
+                }
+            }
+        })
     }
 }
 new App();
