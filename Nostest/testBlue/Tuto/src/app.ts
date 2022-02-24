@@ -88,7 +88,7 @@ class App {
 
     // Menu de base
     private async _startMenu() {
-        //this._engine.displayLoadingUI();
+        this._engine.displayLoadingUI();
         this._scene.detachControl();
 
         let scene = new Scene(this._engine);
@@ -117,7 +117,7 @@ class App {
 
         // Attente de fin de render
         await scene.whenReadyAsync();
-        //this._engine.hideLoadingUI();
+        this._engine.hideLoadingUI();
 
         // Chepas
         this._scene.dispose();
@@ -127,20 +127,23 @@ class App {
 
     private async _setUpGame() {
         this._scene.detachControl();
+        this._engine.displayLoadingUI();
 
         // Scene
         let scene = new Scene(this._engine);
         this._scene = scene;
         await this._pauseMenu()
-        await this._loadMesh(scene)
+        await this._loadAssets(scene)
         await this._loadCamera(scene)
+        await scene.whenReadyAsync();
+        this._engine.hideLoadingUI();
     }
 
-    private async _loadMesh(scene) {
+    private async _loadAssets(scene) {
         //var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
         var light: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
         
-        var tank: SceneLoader = SceneLoader.ImportMesh('',"../public/assets/objets/tank.glb", "", scene, function (newMeshes){
+        var tank: SceneLoader = SceneLoader.ImportMesh('',"./public/assets/objets/tank.babylon", "", scene, function (newMeshes){
             for(const mesh of newMeshes) {
                 mesh.scaling = new Vector3(1, 1, 1)
                 mesh.position = new Vector3(0, 0, 0)
@@ -157,25 +160,27 @@ class App {
     private async _pauseMenu() {
         const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI("UI");
         guiMenu.idealHeight = 720; 
-        const startBtn = Button.CreateSimpleButton("start", "PLAY");
-        startBtn.width = 0.2;
-        startBtn.height = "40px";
-        startBtn.color = "white";
-        startBtn.top = "-14px";
-        startBtn.thickness = 1;
-        startBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
-        startBtn.onPointerDownObservable.add(() => {
+        const pauseBtn = Button.CreateSimpleButton("pause", "PAUSE");
+        pauseBtn.width = 0.2;
+        pauseBtn.height = "40px";
+        pauseBtn.color = "white";
+        pauseBtn.top = "-14px";
+        pauseBtn.thickness = 1;
+        pauseBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
+
+        //Events
+        pauseBtn.onPointerDownObservable.add(() => {
             this._pause=false
-            guiMenu.removeControl(startBtn)
+            guiMenu.removeControl(pauseBtn)
         });
         window.addEventListener("keydown", (ev) => {
             if (ev.keyCode == 27) {
                 if(this._pause) {
                     this._pause=false
-                    guiMenu.removeControl(startBtn)
+                    guiMenu.removeControl(pauseBtn)
                 } else {
                     this._pause=true
-                    guiMenu.addControl(startBtn);
+                    guiMenu.addControl(pauseBtn);
                 }
             }
         })
