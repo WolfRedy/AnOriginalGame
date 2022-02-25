@@ -12,7 +12,7 @@ function createScene() {
     }, scene);
     box.position = new BABYLON.Vector3(15,0,0)
     const tank = BABYLON.SceneLoader.ImportMesh('','./assets/babylon_object/tank.babylon',"", scene, function (newMeshes){
-        for(mesh of newMeshes) {
+        for(const mesh of newMeshes) {
             mesh.scaling = new BABYLON.Vector3(1, 1, 1)
             mesh.position = new BABYLON.Vector3(0, 0, 0)
             objectList.unshift(mesh)

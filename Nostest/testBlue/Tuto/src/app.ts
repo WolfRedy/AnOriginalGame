@@ -42,7 +42,7 @@ class App {
 
     // Fonction Main
     private async _main(): Promise<void> {
-        await this._startMenu();
+        await this._setUpGame(); // A remplacer avec _startMenu() /!\
 
         // Render Loop
         this._engine.runRenderLoop(() => {
@@ -61,6 +61,10 @@ class App {
                     break;
                 default: break;
             }
+        });
+        
+        window.addEventListener('resize', () => {
+            this._engine.resize();
         });
     }
     
@@ -100,7 +104,7 @@ class App {
         const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI("UI");
         guiMenu.idealHeight = 720; 
 
-        // Création du bouton
+        // Création du bouton play
         const startBtn = Button.CreateSimpleButton("start", "PLAY");
         startBtn.width = 0.2;
         startBtn.height = "40px";
@@ -140,16 +144,16 @@ class App {
     }
 
     private async _loadAssets(scene) {
-        //var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
+        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
         var light: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
-        
-        var tank: SceneLoader = SceneLoader.ImportMesh('',"./public/assets/objets/tank.babylon", "", scene, function (newMeshes){
+        var map: SceneLoader = SceneLoader.ImportMesh('',"assets/map/test.babylon", "", scene)
+        var tank: SceneLoader = SceneLoader.ImportMesh('',"assets/objets/tank.babylon", "", scene, function (newMeshes){
             for(const mesh of newMeshes) {
                 mesh.scaling = new Vector3(1, 1, 1)
-                mesh.position = new Vector3(0, 0, 0)
+                mesh.position = new Vector3(20, 0, 0)
             }
         });
-        
+        console.log(tank)
     }
 
     private async _loadCamera(scene) {
@@ -160,7 +164,7 @@ class App {
     private async _pauseMenu() {
         const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI("UI");
         guiMenu.idealHeight = 720; 
-        const pauseBtn = Button.CreateSimpleButton("pause", "PAUSE");
+        const pauseBtn = Button.CreateSimpleButton("pause", "En pause");
         pauseBtn.width = 0.2;
         pauseBtn.height = "40px";
         pauseBtn.color = "white";

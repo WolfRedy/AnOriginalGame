@@ -27,18 +27,7 @@ module.exports = {
                 test: /\.tsx?$/,
                 use: "ts-loader",
                 exclude: /node_modules/,
-            },
-            {
-                test: /\.(png|jpg|gif|env|glb|stl|babylon)$/i,
-                use: [
-                    {
-                        loader: "url-loader",
-                        options: {
-                            limit: 8192,
-                        },
-                    },
-                ],
-            },
+            }
         ],
     },
     /*module: {
