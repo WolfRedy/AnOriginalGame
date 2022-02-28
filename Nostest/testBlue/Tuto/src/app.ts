@@ -1,7 +1,7 @@
 import "@babylonjs/core/Debug/debugLayer";
 import "@babylonjs/inspector";
 import "@babylonjs/loaders/glTF";
-import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, Color4, FreeCamera, SceneLoader } from "@babylonjs/core";
+import { Engine, Scene, ArcRotateCamera, Vector3, HemisphericLight, Mesh, MeshBuilder, Color4, FreeCamera, SceneLoader, CannonJSPlugin } from "@babylonjs/core";
 import { AdvancedDynamicTexture, Button, Control } from "@babylonjs/gui";
 
 enum GameState { STARTMENU = 0, GAME = 1, PAUSE = 2, ANIMATION = 3 }
@@ -27,7 +27,7 @@ class App {
         // Racourcis de Debug
         window.addEventListener("keydown", (ev) => {
             // Shift+Ctrl+Alt+I
-            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.keyCode == 73) {
+            if (ev.shiftKey && ev.ctrlKey && ev.altKey && ev.key == "I") {
                 if (this._scene.debugLayer.isVisible()) {
                     this._scene.debugLayer.hide();
                 } else {
@@ -114,7 +114,6 @@ class App {
         startBtn.verticalAlignment = Control.VERTICAL_ALIGNMENT_BOTTOM;
         guiMenu.addControl(startBtn);
 
-        //this handles interactions with the start button attached to the scene
         startBtn.onPointerDownObservable.add(() => {
             this._setUpGame(); //observables disabled
         });
@@ -136,7 +135,7 @@ class App {
         // Scene
         let scene = new Scene(this._engine);
         this._scene = scene;
-        await this._pauseMenu()
+        await this._pauseMenu(scene)
         await this._loadAssets(scene)
         await this._loadCamera(scene)
         await scene.whenReadyAsync();
@@ -144,8 +143,10 @@ class App {
     }
 
     private async _loadAssets(scene) {
-        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
         var light: HemisphericLight = new HemisphericLight("light1", new Vector3(1, 1, 0), scene);
+
+        // Mesh
+        var sphere: Mesh = MeshBuilder.CreateSphere("sphere", { diameter: 1 }, scene);
         var map: SceneLoader = SceneLoader.ImportMesh('',"assets/map/test.babylon", "", scene)
         var tank: SceneLoader = SceneLoader.ImportMesh('',"assets/objets/tank.babylon", "", scene, function (newMeshes){
             for(const mesh of newMeshes) {
@@ -153,7 +154,8 @@ class App {
                 mesh.position = new Vector3(20, 0, 0)
             }
         });
-        console.log(tank)
+        //scene.enablePhysics(null, new CannonJSPlugin());
+        
     }
 
     private async _loadCamera(scene) {
@@ -161,7 +163,7 @@ class App {
         camera.attachControl(this._canvas, true);
     }
 
-    private async _pauseMenu() {
+    private async _pauseMenu(scene) {
         const guiMenu = AdvancedDynamicTexture.CreateFullscreenUI("UI");
         guiMenu.idealHeight = 720; 
         const pauseBtn = Button.CreateSimpleButton("pause", "En pause");
@@ -177,13 +179,16 @@ class App {
             this._pause=false
             guiMenu.removeControl(pauseBtn)
         });
+        
         window.addEventListener("keydown", (ev) => {
-            if (ev.keyCode == 27) {
+            if (ev.key == "Escape") {
                 if(this._pause) {
                     this._pause=false
+                    scene.attachControl()
                     guiMenu.removeControl(pauseBtn)
                 } else {
                     this._pause=true
+                    scene.detachControl()
                     guiMenu.addControl(pauseBtn);
                 }
             }
