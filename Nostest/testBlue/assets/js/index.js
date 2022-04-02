@@ -1,6 +1,5 @@
 const canvas = document.getElementById('renderCanvas')
 const engine = new BABYLON.Engine(canvas, true)
-let a = 0.5
 let objectList=[]
 function createScene() {
     const scene = new BABYLON.Scene(engine);
@@ -17,7 +16,7 @@ function createScene() {
     });
     const light = new BABYLON.HemisphericLight('light', new BABYLON.Vector3(0, 0, 0), scene)
     const box = BABYLON.MeshBuilder.CreateBox("box", {
-        size:10
+        size:10,
     }, scene);
     box.position = new BABYLON.Vector3(15,0,0)
     const tank = BABYLON.SceneLoader.ImportMesh('','./assets/babylon_object/tank.babylon',"", scene, function (newMeshes){
@@ -26,7 +25,7 @@ function createScene() {
             mesh.position = new BABYLON.Vector3(0, 0, 0)
             objectList.unshift(mesh)
         }
-    }); // Tank
+    });
     return scene
 }
 
