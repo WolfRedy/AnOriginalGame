@@ -108,6 +108,7 @@ function createScene() {
     });
 
     scene.registerBeforeRender(function () {
+        
         camera.position = physicsRoot.position.add(new BABYLON.Vector3(20,2,0))
         
         
